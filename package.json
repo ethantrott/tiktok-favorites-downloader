@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@tobyg74/tiktok-api-dl": "^1.2.2"
+    "@tobyg74/tiktok-api-dl": "^1.2.2",
+    "follow-redirects": "^1.15.9",
+    "request": "^2.88.2"
   }
 }
