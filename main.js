@@ -2,6 +2,7 @@ const Tiktok = require("@tobyg74/tiktok-api-dl")
 const { http, https } = require('follow-redirects');
 const fs = require('fs');
 var request = require('request');
+var sleep = require('system-sleep');
 
 const tiktokData = require("./user_data_tiktok.json");
 
@@ -27,6 +28,8 @@ function downloadLink(link, num) {
 
 const favorites = tiktokData["Activity"]["Favorite Videos"]["FavoriteVideoList"];
 for (const vid in favorites) {
+    if (!fs.existsSync("./videos/"+vid+".mp4")){
+        sleep(5000);
     const link = favorites[vid]["Link"];
     console.log("before: " + link);
     var goodLink = request.get(link, function (err, res, body) {
@@ -45,6 +48,9 @@ for (const vid in favorites) {
             console.log(e);
         });
     });
+    }else{
+        console.log("File already exists. Skipping..");
+    }
 }
 
 console.log("Finished:");
