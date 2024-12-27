@@ -28,28 +28,29 @@ function downloadLink(link, num) {
 
 const favorites = tiktokData["Activity"]["Favorite Videos"]["FavoriteVideoList"];
 for (const vid in favorites) {
-    if (!fs.existsSync("./videos/"+vid+".mp4")){
+    if (!fs.existsSync("./videos/" + vid + ".mp4")) {
         sleep(5000);
-    const link = favorites[vid]["Link"];
-    console.log("before: " + link);
-    var goodLink = request.get(link, function (err, res, body) {
-        console.log("after: "+goodLink.uri.href)
-        Tiktok.Downloader(goodLink.uri.href, {
-            version: "v3",
-        }).then((result) => {
-            console.log(result);
-            if (!(result.status === "error")) {
-                console.log("continuing to download")
-                downloadLink(result.result.videoHD, vid);
-            }else{
-                unavailable.push(vid);
-            }
-        }).catch((e) => {
-            console.log(e);
+        const link = favorites[vid]["Link"];
+        console.log("before: " + link);
+        var goodLink = request.get(link, function (err, res, body) {
+            console.log("after: " + goodLink.uri.href)
+            Tiktok.Downloader(goodLink.uri.href, {
+                version: "v3",
+            }).then((result) => {
+                console.log(result);
+                if (!(result.status === "error")) {
+                    console.log("continuing to download")
+                    downloadLink(result.result.videoHD, vid);
+                } else {
+                    unavailable.push(vid);
+                }
+            }).catch((e) => {
+                console.log(e);
+            });
         });
-    });
-    }else{
+    } else {
         console.log("File already exists. Skipping..");
+        finished.push(vid);
     }
 }
 
